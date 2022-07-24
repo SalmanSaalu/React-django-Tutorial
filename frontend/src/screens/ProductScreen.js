@@ -1,16 +1,44 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import {Link,useParams } from 'react-router-dom'
 import {Row ,Col,Image,ListGroup,Button,ListGroupItem,Card} from 'react-bootstrap'
 import Rating from '../components/Rating'
-import products from '../products'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import axios from 'axios'
+import {useDispatch,useSelector} from 'react-redux'
+import {listProductDetails} from '../actions/productActions'
+// import products from '../products'
 
 function ProductScreen() {
-  const number=useParams()
-  const product = products.find((p) => p._id === number.id)
+    // const [product,setProduct]=useState([])
+    const dispatch=useDispatch()
+    const productDetails=useSelector(state=>state.productdetails)
+    const {loading,error,product}=productDetails
+    const number=useParams()
+    useEffect(()=>{
+  
+            dispatch(listProductDetails(number.id))
+    // async function  fetchProduct(){
+    // const {data}= await axios.get(`/api/products/${number.id}`)
+    // setProduct(data)
+//   }
+  
+    // fetchProduct()
+  },[dispatch,number])
+
+//   let product ={}
+
+//   const product = products.find((p) => p._id === number.id)
   return (
     <div>
         <Link to='/' className='btn btn-light my-3 '>Go back</Link>
-        <Row>
+        {
+            loading? <Loader/>
+            : error
+            ? <Message variant='danger'>{error}</Message>
+            :
+            (
+                <Row>
             <Col md={6}>
                 <Image src={product.image} alt={product.name}/>
             </Col>
@@ -62,6 +90,10 @@ function ProductScreen() {
                 </Card>
             </Col>
         </Row>
+            )
+        }
+        
+        
 
       
     </div>
