@@ -33,9 +33,10 @@ function LoginScreen() {
   return (
     <FormContainer>
       <h1>Sign In</h1>
-      <Form onSubmit={submitHandler}>
-        {error && <Message variant='danger'>{error}</Message>}
+      {error && <Message variant='danger'>{error}</Message>}
         {loading && <Loader/>}
+      <Form onSubmit={submitHandler}>
+
         <Form.Group controlId='email'>
         <Form.Label>Email Adress</Form.Label>
         <Form.Control type='email' placeholder='Enter Email' 
